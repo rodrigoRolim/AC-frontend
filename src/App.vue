@@ -12,6 +12,14 @@ export default {
 
 <style scoped>
 #app {
-  background-color: rgba(0,0,0,0.02)
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0.3px;
+  font-size: 0.9rem;
+  color:rgb(53, 52, 52)
+}
+@media only screen and (min-width: 361px) and (max-width: 500px) {
+  #app {
+    font-size: 1.05rem;
+  } 
 }
 </style>
