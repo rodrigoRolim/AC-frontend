@@ -11,8 +11,8 @@
         <i class="far fa-times-circle"></i><p>{{validate.form.msg}}</p>
       </div>
       <form @submit.prevent="saveNewStudent()" ref="form" novalidate="true" 
-      v-checkform="{ fields: ['name', 'email', 'ra', 'graduation', 'password', 'confirm'], 
-      msg: 'preencha os campos abaixo', field: 'form' }">
+      v-checkform="{ fields: validate, msg: 'resolvam os campos abaixo', 
+      field: 'form', class: 'required-fields', object: 'student' }">
         <div class="name-div">
           <label for="name">Nome completo*</label>
           <input type="text" name="name" id="name"
@@ -71,10 +71,11 @@
         <div class="confirm-password-div">
           <label for="confirm-password">Confirme a senha*</label>
           <input type="password" name="confirm-password" id="confirm-password"
-          v-model="confirm"
+          v-model="student.confirm"
           ref="confirm"
           :class="validate.confirm.class"
-          v-equal:keyup="{ field: 'confirm', msg: 'as senhas não combinam', equalto: 'password', class: 'danger'}"
+          v-equal:keyup="{ field: 'confirm', msg: 'a senha não combina',
+          equalto: 'password', class: 'danger', object: 'student'}"
           >
           <small style="color: red" v-if="validate.confirm.show">{{validate.confirm.msg}}</small>
         </div>
@@ -103,20 +104,20 @@ export default {
       validate: {
         name: { msg: 'campo obrigatório', class: '', show: false },
         ra: { msg: 'campo obrigatório', class: '', show: false },
-        email: { msg: '', class: '', show: false },
+        email: { msg: 'email inválido', class: '', show: false, email: true },
         graduation: { msg: 'campo obrigatório', class: '', show: false },
-        password: { msg: '', class: '', show: false },
-        confirm: { msg: '', class: '', show: false },
-        form: { msg: '', class: 'required-fields', show: false}
+        password: { msg: 'mínimo de 8 caractéres', class: '', tam: 8, show: false },
+        confirm: { msg: 'a senha não combina com anterior', class: '', equalto: 'password', show: false },
+        form: { msg: 'resolvam os campos abaixo', class: '', show: false}
       },
       student: {
         ra: null,
         name: null,
         email: null,
         graduation: null,
-        password: null
+        password: null,
+        confirm: null
       },
-      confirm: null,
       pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     }
   },
@@ -135,25 +136,25 @@ export default {
   computed: {
 
     validated () {
-      return this.student.name == null ||  
+      return this.student.name == null || this.student.name == '' || 
                this.student.email == null || 
                !this.pattern.test(this.student.email) || 
                this.student.ra == null ||
                this.student.graduation == null ||
                this.student.password == null || 
                this.student.password.length <= 0 ||
-               this.confirm == null || 
-               this.confirm !== this.student.password
-    } 
+               this.student.confirm == null || 
+               this.student.confirm !== this.student.password
+    }
   },
   methods: {
+
     saveNewStudent () {
  
       if (!this.validated) {
-        console.log("achiviement request")
+        console.log("achivied request")
         return
       }
-      this.validated
     },
     createStudent () {
       this.student.department = this.catchIdDepartment()
