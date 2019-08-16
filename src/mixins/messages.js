@@ -8,14 +8,15 @@ export default {
     }
   },
   methods: {
-    getConfirmation (type, message) {
+    getConfirmation (type, message, time) {
+      console.log(time)
       this.messageAlert = message
       this.alert = type
       this.showAlert = true
       setTimeout(() => {
         this.showAlert = false
         this.alert = null
-      }, 3000)
+      }, time)
     }
   }
 
