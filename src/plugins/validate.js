@@ -4,13 +4,14 @@ validate.install = (Vue, options) => {
   Vue.directive('required', {
    
     inserted: (el, binding, vnode) => {
-   
-      vnode.context.validate[binding.value.field].msg = binding.value.msg
+
+      vnode.context.validate[binding.value.field].msg = binding.value.msg      
       
       el.addEventListener(binding.arg, e => {
 
         vnode.context.validate[binding.value.field].class = (!e.target.value) ? binding.value.class : ''
         vnode.context.validate[binding.value.field].show = !e.target.value
+       
       })
     }
   })
@@ -49,10 +50,10 @@ validate.install = (Vue, options) => {
       el.addEventListener('submit', e => {
 
         Object.keys(validate).forEach(input => {
-          
-          vnode.context.validate[input].class = vnode.context.$refs[input].value == '' ? 'danger' : ''
-          vnode.context.validate[input].show = vnode.context.$refs[input].value == ''
-          trueList.push(vnode.context.$refs[input].value == '')
+          debugger
+          vnode.context.validate[input].class = !vnode.context[object][input] ? 'danger' : ''
+          vnode.context.validate[input].show = !vnode.context[object][input]
+          trueList.push(!vnode.context[object][input])
           
           if (validate[input].tam) {
 
