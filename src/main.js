@@ -8,13 +8,16 @@ import Vuetify from 'vuetify'
 import AdminGraduation from '@/components/professor/AdminGraduation'
 import ProfessorLogin from '@/components/professor/ProfessorLogin'
 import ProfessorHome from '@/components/professor/ProfessorHome'
-import 'font-awesome/css/font-awesome.min.css'
-import 'vuetify/dist/vuetify.min.css'
+import Validate from './plugins/validate'
+
+//import 'font-awesome/css/font-awesome.min.css'
+//import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
 Vue.use(Vuetify, {
   iconfont: 'fa1'
 })
+Vue.use(Validate, {element: 'span', color: 'red', display: 'inline'})
 
 /* eslint-disable no-new */
 new Vue({
