@@ -10,6 +10,9 @@
       <div :class="validate.form.class" v-if="validate.form.show && validated">
         <i class="far fa-times-circle"></i><p>{{validate.form.msg}}</p>
       </div>
+
+      <ac-message :confirmation="{message: messageAlert, alert, show: showAlert}"></ac-message>
+
       <form @submit.prevent="saveNewStudent()" ref="form" novalidate="true" 
       v-checkform="{ fields: validate, msg: 'resolvam os campos abaixo', 
       field: 'form', class: 'required-fields', object: 'student' }">
@@ -46,14 +49,14 @@
         </div>
         <div class="graduation-div">
           <label for="graduation">Curso de graduação*</label>
-          <select name="graduation" id="graduation" placeholder="selecion o seu curso"
-          v-model="student.graduation"
-          ref="graduation"
+          <select name="graduation" id="graduation" placeholder="selecione o seu curso"
           :class="validate.graduation.class"
+          v-model="student.graduation"
           v-required:change="{ field: 'graduation', msg: 'campo obrigatório', class: 'danger' }"
           >
             <option value disabled selected hidden></option>
-            <option value="aasd">option 2</option>
+            <option v-for="(graduation, i) in graduations" 
+            v-bind:key="i" :value="graduation.id">{{graduation.name}}</option>
           </select>
           <small style="color: red" v-if="validate.graduation.show">{{validate.graduation.msg}}</small>
         </div>
@@ -80,7 +83,7 @@
           <small style="color: red" v-if="validate.confirm.show">{{validate.confirm.msg}}</small>
         </div>
         <div class="control-btns">
-          <button type="submit" >cadastrar</button>
+          <button type="submit" :disabled="validated">cadastrar</button>
         </div>
       </form>
     </div>
@@ -89,20 +92,21 @@
 
 <script>
 import AcNavbar from '../AcNavbar'
+import AcMessage from '../AcMessage'
 import router from '@/router/index'
 import Student from '@/services/Student.js'
 import GraduationService from '@/services/Graduation.js'
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
 import message from '../../mixins/messages'
 
 export default {
   name: 'AddStudent',
-  components: { AcNavbar },
+  components: { AcNavbar, AcMessage },
   mixins: [message],
   data () {
     return {
       validate: {
-        name: { msg: 'campo obrigatório', class: '', show: false },
+        name: { msg: 'campo obrigatório', class: 's', show: false },
         ra: { msg: 'campo obrigatório', class: '', show: false },
         email: { msg: 'email inválido', class: '', show: false, email: true },
         graduation: { msg: 'campo obrigatório', class: '', show: false },
@@ -118,20 +122,12 @@ export default {
         password: null,
         confirm: null
       },
+      graduations: null,
       pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     }
   },
   created () {
-  // console.log(this.getConfirmation('error', 'asdasd'))
-/* 
-    GraduationService.readAll()
-      .then((resp) => {
-        this.graduations = resp.data
-        resp.data.map(graduation => {
-          this.graduationsNames.push(graduation.name)
-        })
-      })
-      .catch((err) => this.getConfirmation('error', 'Ocorreu um erro, tente mais uma vez')) */
+    this.getGraduations()
   },
   computed: {
 
@@ -148,7 +144,14 @@ export default {
     }
   },
   methods: {
-
+   getGraduations () {
+      GraduationService.readAll()
+      .then((resp) => resp.data)
+      .then((graduations) => graduations.map((graduation) => 
+        Object.assign({name: graduation.name, id: graduation._id})))
+      .then((graduations) => this.graduations = graduations)
+      .catch((err) => this.getConfirmation('error', 'ocorreu um erro, recarrege a página', 10000))
+    },
     saveNewStudent () {
  
       if (!this.validated) {
@@ -164,17 +167,8 @@ export default {
         }
       })
       .catch((err) => {
-        this.getConfirmation('error', 'Não foi possível efetuar o cadastro')
+        this.getConfirmation('error', 'Não foi possível efetuar o cadastro', 3000)
       })
-    },
-    getConfirmation (type, message) {
-      this.messageAlert = message
-      this.alert = type
-      this.showAlert = true
-      setTimeout(() => {
-        this.showAlert = false
-        this.alert = null
-      }, 3000)
     },
     catchIdDepartment () {
       const graduation = this.graduations.filter(grad => 
@@ -241,12 +235,12 @@ button[type="submit"]:disabled {
 .ok {
   border: 1px solid #d1d5da;
 }
-.required-fields {
+.required-fields, .error {
   border: 1px solid rgb(250, 142, 142);
   color: white;
   background-color: red;
   border-radius: 2px;
-  font-size: 1.0rem;
+  font-size: 0.9rem;
   flex-direction: row;
   align-items: center;
   font-weight: 600;
@@ -257,12 +251,9 @@ i {
   margin-right: 20px;
   font-size: 1.5rem;
 }
-::-webkit-input-placeholder {text-indent:8px!important; font-size: 1.0rem}
-:-moz-placeholder { text-indent:8px!important; font-size: 1.0rem}
-::-moz-placeholder {text-indent:8px!important; font-size: 1.0rem}
-::-ms-input-placeholder {text-indent:8px!important; font-size: 1.0rem} 
+
 @media only screen and (max-width: 360px) {
-  .required-fields {
+  .required-fields, .error {
     display: flex;
     padding: 20px 0;
     width: 90%;
@@ -286,8 +277,10 @@ i {
   }
 }
 @media only screen and (min-width: 360px) and (max-width: 500px) {
-  .required-fields {
-    width: 90%
+  .required-fields, .error {
+    display: flex;
+    padding: 20px 0;
+    width: 90%;
   }
   form {
     flex-direction: column;
