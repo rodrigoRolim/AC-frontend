@@ -15,7 +15,8 @@ export default {
   font-family: Arial, Helvetica, sans-serif;
   letter-spacing: 0.3px;
   font-size: 0.9rem;
-  color:rgb(53, 52, 52)
+  color:rgb(53, 52, 52);
+  background-color: rgba(248, 248, 182, 0.007);
 }
 
 ::-webkit-input-placeholder {text-indent:8px!important; font-size: 1.0rem}
