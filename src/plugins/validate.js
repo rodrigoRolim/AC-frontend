@@ -50,7 +50,7 @@ validate.install = (Vue, options) => {
       el.addEventListener('submit', e => {
 
         Object.keys(validate).forEach(input => {
-          debugger
+
           vnode.context.validate[input].class = !vnode.context[object][input] ? 'danger' : ''
           vnode.context.validate[input].show = !vnode.context[object][input]
           trueList.push(!vnode.context[object][input])
@@ -82,8 +82,11 @@ validate.install = (Vue, options) => {
 
         vnode.context.validate[binding.value.field].class = binding.value.class
         vnode.context.validate[binding.value.field].show = !trueList.every(el => !el)
-        if (trueList.every(el => !el)) {
+ 
+        if (!trueList.every(el => !el)) {
+          console.log("asdf")
           vnode.context.$refs.form.reset()
+         
         }
       })
     }
