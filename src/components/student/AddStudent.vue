@@ -1,9 +1,13 @@
 <template>
   <div>
     <ac-navbar>
-      <div class="list-nav">
-        <a to="/professor">professor</a>
-        <a to="/aluno">aluno</a>
+      <div id="desktop">
+        <router-link to="/professor">professor</router-link>
+        <router-link to="/aluno">aluno</router-link>
+      </div>
+      <div id="mobile">
+        <router-link to="/professor"><i to="/professor" class="fas fa-chalkboard-teacher"></i></router-link>
+        <router-link to="/aluno"><i class="fas fa-user-graduate"></i></router-link>
       </div>
     </ac-navbar>
     <div class="container-add-student">
@@ -77,7 +81,7 @@
           v-model="student.confirm"
           ref="confirm"
           :class="validate.confirm.class"
-          v-equal:keyup="{ field: 'confirm', msg: 'a senha não combina',
+          v-equal:blur="{ field: 'confirm', msg: 'a senha não combina',
           equalto: 'password', class: 'danger', object: 'student'}"
           >
           <small style="color: red" v-if="validate.confirm.show">{{validate.confirm.msg}}</small>
@@ -250,6 +254,18 @@ button[type="submit"]:disabled {
 i {
   margin-right: 20px;
   font-size: 1.5rem;
+  color:#fefeff;
+}
+#mobile a, #desktop a {
+  align-self: center;
+  padding: 0;
+}
+#desktop {
+  display: flex;
+  flex-direction: row;
+}
+#mobile {
+  display: none;
 }
 
 @media only screen and (max-width: 360px) {
@@ -274,6 +290,13 @@ i {
   }
   button[type="submit"] {
     padding: 15px 0;
+  }
+  #mobile {
+    display: flex;
+    flex-direction: row;
+  }
+  #desktop {
+    display: none;
   }
 }
 @media only screen and (min-width: 360px) and (max-width: 500px) {
@@ -303,6 +326,13 @@ i {
   }
   .control-btns {
     flex-direction: column;
+  }
+  #mobile {
+    display: flex;
+    flex-direction: row;
+  }
+  #desktop {
+    display: none;
   }
 }
 

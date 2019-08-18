@@ -2,10 +2,14 @@
   <v-app>
     <mask-load v-if="showMask"></mask-load>
     <ac-navbar>
-      <v-toolbar-items>
-        <v-btn flat to="/professor">professor</v-btn>
-        <v-btn flat to="/aluno">aluno</v-btn>
-      </v-toolbar-items>
+       <div id="desktop">
+        <router-link to="/professor">professor</router-link>
+        <router-link to="/aluno">aluno</router-link>
+      </div>
+      <div id="mobile">
+        <router-link to="/professor"><i to="/professor" class="fas fa-chalkboard-teacher"></i></router-link>
+        <router-link to="/aluno"><i class="fas fa-user-graduate"></i></router-link>
+      </div>
     </ac-navbar>
     <div class="container">
     
@@ -150,5 +154,40 @@ export default {
 .title {
   margin: 0 auto;
   width: 40%;
+}
+i {
+  margin-right: 20px;
+  font-size: 1.5rem;
+  color: white;
+}
+#mobile a, #desktop a {
+  align-self: center;
+  color:#c9dce6;
+  padding: 0;
+}
+#desktop {
+  display: flex;
+  flex-direction: row;
+}
+#mobile {
+  display: none;
+}
+@media only screen and (max-width: 360px) {
+  #mobile {
+    display: flex;
+    flex-direction: row;
+  }
+  #desktop {
+    display: none;
+  }
+}
+@media only screen and (min-width: 360px) and (max-width: 500px) {
+  #mobile {
+    display: flex;
+    flex-direction: row;
+  }
+  #desktop {
+    display: none;
+  }
 }
 </style>
