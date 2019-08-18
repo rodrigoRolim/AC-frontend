@@ -87,7 +87,7 @@
           <small style="color: red" v-if="validate.confirm.show">{{validate.confirm.msg}}</small>
         </div>
         <div class="control-btns">
-          <button type="submit" :disabled="validated">cadastrar</button>
+          <button type="submit" >cadastrar</button>
         </div>
       </form>
     </div>
@@ -110,7 +110,7 @@ export default {
   data () {
     return {
       validate: {
-        name: { msg: 'campo obrigatório', class: 's', show: false },
+        name: { msg: 'campo obrigatório', class: '', show: false },
         ra: { msg: 'campo obrigatório', class: '', show: false },
         email: { msg: 'email inválido', class: '', show: false, email: true },
         graduation: { msg: 'campo obrigatório', class: '', show: false },
@@ -216,7 +216,7 @@ select {
   flex-direction: row;
 }
 button[type="submit"] {
-  background-color: rgba(73, 161, 73, 0.8);
+  background-color: rgb(1, 90, 255);
   border: 1px solid transparent;
   border-radius: 1px;
   margin-top: 50px;
