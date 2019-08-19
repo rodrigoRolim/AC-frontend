@@ -148,7 +148,7 @@ i {
 }
 #mobile a, #desktop a {
   align-self: center;
-  color:#878c92;
+  color:#ffffff;
   padding: 0;
 }
 #desktop {
