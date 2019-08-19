@@ -81,12 +81,10 @@ validate.install = (Vue, options) => {
         });
 
         vnode.context.validate[binding.value.field].class = binding.value.class
-        vnode.context.validate[binding.value.field].show = !trueList.every(el => !el)
- 
-        if (!trueList.every(el => !el)) {
-          console.log("asdf")
-          vnode.context.$refs.form.reset()
-         
+        vnode.context.validate[binding.value.field].show = trueList.every(el => el)
+
+        if (!trueList.every(el => !el)) { 
+          Object.keys(validate).forEach(input => vnode.context[object][input] = null)
         }
       })
     }
