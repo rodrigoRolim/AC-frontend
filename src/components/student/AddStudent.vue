@@ -16,7 +16,9 @@
       </div>
 
       <ac-message :confirmation="{message: messageAlert, alert, show: showAlert}"></ac-message>
-
+      <div class="header-form">
+        <h3>Cadastro de Estudante</h3>
+      </div>
       <form @submit.prevent="saveNewStudent()" ref="form" novalidate="true" 
       v-checkform="{ fields: validate, msg: 'resolvam os campos abaixo', 
       field: 'form', class: 'required-fields', object: 'student' }">
