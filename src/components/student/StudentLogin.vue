@@ -32,11 +32,13 @@
         </div>
         <div class="password-div">
           <label for="password">senha*</label>
-          <input type="password" name="password" id="password" 
-          v-model="student.password"
-          :class="validate.password.class"
-          v-required:keyup="{ field: 'password', msg: 'campo obrigatório', class: 'danger' }"
-          >
+          <div class="password-toggle" :id="validate.password.class">
+            <input :type="(password) ? 'password': 'text'" name="password" id="password" 
+            v-model="student.password"
+            v-required:keyup="{ field: 'password', msg: 'campo obrigatório', class: 'danger' }"
+            >
+           <i :class="(password) ? 'fas fa-eye': 'fas fa-eye-slash'" @click="password=!password" style="color: gray"></i>
+          </div>
           <small style="color: red" v-if="validate.password.show">{{validate.password.msg}}</small>
         </div>
         <div class="buttons">
@@ -66,7 +68,9 @@ export default {
       student: {
         ra: null,
         password: null
-      }
+      },
+      password: true,
+      eye: 'fas fa-eye'
     }
   },
   computed: {
@@ -75,6 +79,14 @@ export default {
     },
     validated () {
       return this.student.ra === null || this.student.password == null
+    }
+  },
+  directives: {
+    toggle: {
+      inserted: (el, biding, vnode) => {
+
+        
+      }
     }
   },
   methods: {
@@ -102,7 +114,7 @@ export default {
         }) */
     },
     createSession (response) {
-      console.log(response)
+
       this.setUser(response.user)
       this.setToken(response.token)
     },
@@ -191,6 +203,9 @@ button[type="submit"]:disabled {
 .danger {
   border: 1px solid red;
 }
+#danger {
+  border: 1px solid red;
+}
 .required-fields, .error {
   border: 1px solid rgb(250, 142, 142);
   color: white;
@@ -202,6 +217,24 @@ button[type="submit"]:disabled {
   font-weight: 600;
   margin-bottom: 30px;
   justify-content: center;
+}
+.fa-eye {
+  margin: 0 10px;
+}
+.fa-eye-slash {
+  margin: 0 8px;
+}
+.password-toggle {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5da;
+  border-radius: 3px;
+  padding: 0;
+}
+.password-toggle input {
+  padding: 11px 0;
+  border: 0;
+  outline: none;
 }
 @media only screen and (max-width: 360px) {
    .required-fields, .error {
