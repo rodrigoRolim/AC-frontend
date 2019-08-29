@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
    
     <ac-navbar>
        <div id="desktop">
@@ -47,7 +47,7 @@
         </div>
       </form>
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -81,14 +81,7 @@ export default {
       return this.student.ra === null || this.student.password == null
     }
   },
-  directives: {
-    toggle: {
-      inserted: (el, biding, vnode) => {
 
-        
-      }
-    }
-  },
   methods: {
     login () {
      /*  this.showMask = true
