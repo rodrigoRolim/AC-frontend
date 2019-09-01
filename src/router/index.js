@@ -153,7 +153,7 @@ let router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+/* router.beforeEach((to, from, next) => {
   
   let token = 'undefined'
   let user = 'undefined'
@@ -202,5 +202,5 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-}) 
+})  */
 export default router

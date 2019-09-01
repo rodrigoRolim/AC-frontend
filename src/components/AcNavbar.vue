@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar">
-    <router-link id="des-logo" icon to="/"><v-icon x-large>access_time</v-icon></router-link>
-    <router-link id="arrow-back" icon to="/"><v-icon>arrow_back</v-icon></router-link>
+    <router-link id="logo" icon to="/"><v-icon x-large>access_time</v-icon></router-link>
+    <a id="arrow-back" icon @click="$router.go(-1)"><v-icon>arrow_back</v-icon></a>
     <slot></slot>
   </div>
 </template>
@@ -9,6 +9,12 @@
 <script>
 export default {
   name: 'AcNavbar',
+  props: {
+    back: {
+      type: String,
+      default: "/"
+    }
+  },
   data () {
     return {
     }
@@ -38,7 +44,7 @@ export default {
     display: flex;
     text-decoration: none;
   }
-  #des-logo {
+  #logo {
     display: none;
   }
   .toolbar {
@@ -51,7 +57,7 @@ export default {
     display: flex;
     text-decoration-style: none;
   }
-  #des-logo {
+  #logo {
     display: none;
   }
 }

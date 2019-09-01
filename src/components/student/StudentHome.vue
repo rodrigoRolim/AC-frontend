@@ -2,7 +2,7 @@
   <v-app>
     <mask-load v-if="showMask"></mask-load>
     <ac-navbar>
-      <v-toolbar-items>
+     <!--  <v-toolbar-items>
         <v-btn depressed color="secondary" dark to="/aluno/home">Documentos <v-icon dark right>fa-file</v-icon></v-btn>
         <v-menu
         transition="slide-y-transition"
@@ -29,17 +29,18 @@
         upload <v-icon right dark>cloud_upload</v-icon>
         </v-btn>
         <v-btn color="error"  @click="logout()">sair<v-icon dark right>exit_to_app</v-icon></v-btn>
-      </v-toolbar-items>
+      </v-toolbar-items> -->
     </ac-navbar>
-    <v-alert
+    <ac-student-document></ac-student-document>
+    <!-- <v-alert
         class="alert"
         :type="typeAlert"
         :value="showAlert"
         >
         {{message}}
-    </v-alert>
-    <student-progress v-if="situation && documents.length >= 0" :documents="documents" :situation="situation"></student-progress>
-    <student-documents v-if="documents.length >= 0" :documents="documents" :situation="situation"></student-documents>
+    </v-alert> -->
+   <!--  <student-progress v-if="situation && documents.length >= 0" :documents="documents" :situation="situation"></student-progress>
+    <student-documents v-if="documents.length >= 0" :documents="documents" :situation="situation"></student-documents> -->
   </v-app>
 </template>
 
@@ -48,6 +49,7 @@ import AcNavbar from '../AcNavbar'
 import MaskLoad from '../MaskLoad'
 import StudentDocuments from '../StudentDocuments'
 import StudentProgress from '../StudentProgress'
+import AcStudentDocument from '../AcStudentDocument'
 import StudentService from '@/services/Student'
 import DocumentService from '@/services/Document'
 import GroupService from '@/services/Group'
@@ -55,7 +57,7 @@ import pdfjs from 'pdfjs-dist'
 // import Pushser from 'pusher-js'
 export default {
   name: 'StudentHome',
-  components: { AcNavbar, MaskLoad, StudentDocuments, StudentProgress },
+  components: { AcNavbar, MaskLoad, AcStudentDocument, StudentProgress },
   data () {
     return {
       message: '',
@@ -68,8 +70,8 @@ export default {
     }
   },
   created () {
-    this.showMask = true
-    this.initialize(JSON.parse(localStorage.getItem('user'))._id)
+    /* this.showMask = true
+    this.initialize(JSON.parse(localStorage.getItem('user'))._id) */
   },
   methods: {
     logout () {

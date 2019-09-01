@@ -21,13 +21,13 @@
       v-checkform="{ fields: validate, msg: 'resolvam os campos abaixo', 
       field: 'form', class: 'required-fields', object: 'professor' }">
         <div class="ra-div">
-          <label for="ra">SIAPE*</label>
-          <input type="text" name="ra" id="ra" 
-          v-model="professor.name"
-          :class="validate.name.class"
-          v-required:keyup="{ field: 'name', msg: 'campo obrigatório', class: 'danger' }"
+          <label for="siape">SIAPE*</label>
+          <input type="text" name="siape" id="siape" 
+          v-model="professor.siape"
+          :class="validate.siape.class"
+          v-required:keyup="{ field: 'siape', msg: 'campo obrigatório', class: 'danger' }"
           >
-          <small style="color: red" v-if="validate.name.show">{{validate.name.msg}}</small>
+          <small style="color: red" v-if="validate.siape.show">{{validate.siape.msg}}</small>
         </div>
         <div class="password-div">
           <label for="password">Senha*</label>
@@ -61,15 +61,22 @@ export default {
       validatedUser: false,
       errorMessages: '',
       professor: {
-        name: null,
+        siape: null,
         password: null
       },
       validate: {
-        name: { field: 'name', msg: 'campo obrigatório', class: '', show: false },
+        siape: { field: 'name', msg: 'campo obrigatório', class: '', show: false },
         password: { field: 'password', msg: 'mínimo de 8 caractéres', class: '', tam: 8, show: false },
         form: { field: 'form', msg: 'resolvam os campos abaixo', class: '', show: false}
       },
       password: true
+    }
+  },
+  directives: {
+    icon: {
+      inserted: (el) => {
+        el.innerHTML
+      }
     }
   },
   methods: {
@@ -218,7 +225,7 @@ button[type="submit"]:disabled {
   outline: none;
 }
 @media only screen and (max-width: 360px) {
-   .required-fields, .error {
+  .required-fields, .error {
     display: flex;
     padding: 20px 0;
     width: 90%;
