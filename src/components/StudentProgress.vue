@@ -1,42 +1,46 @@
 <template>
-  <v-card class="text-xs-center progress" >
-   <v-toolbar-title class="grey--text text--darken-2">Progresso</v-toolbar-title>
-    <v-progress-circular
-      v-if="!(approved && situation !== 'debting')"
-      v-for="(score, index) in this.$store.getters.getBoard"
-      v-bind:key="index"
-      :rotate="360"
-      :size="130"
-      :width="15"
-      :value="score.percent"
-      :color="getColor(index)"
-    >
-      {{ score.raw }} <small>pontos</small> <strong>{{score.group}}</strong>
-    </v-progress-circular>
- 
-    <v-progress-circular
-      v-if="approved || situation == 'approved'"
-      :rotate="360"
-      :size="130"
-      :width="15"
-      :value="total*100/70"
-      color="#00C853"
-    >
-      <v-icon large color="#FDD835" class="fa4">fa-trophy</v-icon>
-      <span v-if="!situation !== 'debting'" class="text-approved">aprovado!</span>
-    </v-progress-circular>
-    <v-flex v-if="approved">
-      <small v-if="situation !== 'approved'">Ainda não foi completamente avaliado pelo(a) professor(a)</small>
-    </v-flex>
-  </v-card>
+  <div class="container-progress">
+    <h2>Progresso na disciplina</h2>
+    <div class="progress-bar">
+       <radial-progress-bar :diameter="110"
+                        :completed-steps="10"
+                        :total-steps="20"
+                        startColor="red"
+                        stopColor="red"
+                        innerStrokeColor="#F6F6F6">
+      <small style="color: red">Grupo: 1</small>
+      <small style="color: red">Pontos: 10</small>
+      </radial-progress-bar>
+      <radial-progress-bar :diameter="110"
+                          :completed-steps="15"
+                          :total-steps="30"
+                          startColor="green"
+                          stopColor="green"
+                          innerStrokeColor="#F6F6F6">
+        <small style="color: green">Grupo: 2</small>
+        <small style="color: green">Pontos: 15</small>
+      </radial-progress-bar>
+      <radial-progress-bar :diameter="110"
+                          :completed-steps="20"
+                          :total-steps="30"
+                          startColor="#ECE502"
+                          stopColor="#ECE502"
+                          innerStrokeColor="#F6F6F6">
+        <small style="color: #ECE502">Grupo: 3</small>
+        <small style="color: #ECE502">Pontos: 20</small>
+      </radial-progress-bar>
+    </div>
+   
+  </div>
 </template>
 
 <script>
 import GroupService from '@/services/Group'
-
+import RadialProgressBar from 'vue-radial-progress'
 export default {
   name: 'StudentProgress',
   props: ['documents', 'situation'],
+  components: { RadialProgressBar },
   data () {
     return {
       interval: {},
@@ -46,11 +50,13 @@ export default {
       value: 0,
       groups: null,
       pointed_color: 0,
-      colors: ['teal', 'primary', 'red']
+      colors: ['teal', 'primary', 'red'],
+      pontos: 10,
+      grupo: 3
     }
   },
   created () {
-    console.log(this.$store.getters.getBoard)
+    /* console.log(this.$store.getters.getBoard)
     const student = JSON.parse(localStorage.getItem('user'))
     GroupService.readAll()
       .then((res) => res.data)
@@ -59,7 +65,7 @@ export default {
         return
       })
       .then(() => this.setScoreboard())
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err)) */
   },
   updated() {
     this.aprobation(this.$store.getters.getBoard)
@@ -103,42 +109,30 @@ export default {
       }
      
     },
-   /*  Pusher (documents) {
-      
-      Pusher.logToConsole = true;
-
-      let pusher = new Pusher('9dc5a8662a93a62e45bb', {
-        cluster: 'us2',
-        forceTLS: true
-      });
-      const changeDocument = this.changeDocument
-      let channel = pusher.subscribe(JSON.parse(localStorage.getItem('user'))._id);
-      var setScoreBoard = this.setScoreboard
-      console.log(setScoreBoard)
-      channel.bind('my-event', function(data) {
-        setScoreBoard()
-      });
-    } */
-    
   }
 }
 </script>
 
 <style scoped>
-.v-progress-circular {
-    margin: 1rem
+
+.container-progress {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20px 8px;
+  border: 1px solid #ddd;
 }
-.progress {
-  margin: 5px auto;
-  width: 90%;
+h2 { text-align: center;}
+.progress-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.radial-progress-bar {
+  display: flex;
+  flex-direction: row;
 }
 strong {
   font-size: 1.15rem
-}
-#trophy {
-  font-size: 20px;
-}
-.text-approved {
-  color: #004D40
 }
 </style>

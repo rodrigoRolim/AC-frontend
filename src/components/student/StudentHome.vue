@@ -1,47 +1,15 @@
 <template>
-  <v-app>
-    <mask-load v-if="showMask"></mask-load>
+  <div>
     <ac-navbar>
-     <!--  <v-toolbar-items>
-        <v-btn depressed color="secondary" dark to="/aluno/home">Documentos <v-icon dark right>fa-file</v-icon></v-btn>
-        <v-menu
-        transition="slide-y-transition"
-        bottom
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn
-              class="purple"
-              color="primary"
-              depressed
-              dark
-              v-on="on"
-            >
-              menu <v-icon dark right>menu</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-tile to="/aluno/perfil">
-              <v-list-tile-title>perfil</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-        <v-btn depressed  dark color="blue-grey" to="/aluno/documento/add">
-        upload <v-icon right dark>cloud_upload</v-icon>
-        </v-btn>
-        <v-btn color="error"  @click="logout()">sair<v-icon dark right>exit_to_app</v-icon></v-btn>
-      </v-toolbar-items> -->
+      <div id="student-nav">
+        <router-link to="/aluno/home"><i class="fas fa-home"></i></router-link>
+        <router-link to=""><i class="fas fa-user"></i></router-link>
+        <router-link to="/aluno/documento/add"><i class="fas fa-file-upload"></i></router-link>
+      </div>
     </ac-navbar>
+    <student-progress ></student-progress>
     <ac-student-document></ac-student-document>
-    <!-- <v-alert
-        class="alert"
-        :type="typeAlert"
-        :value="showAlert"
-        >
-        {{message}}
-    </v-alert> -->
-   <!--  <student-progress v-if="situation && documents.length >= 0" :documents="documents" :situation="situation"></student-progress>
-    <student-documents v-if="documents.length >= 0" :documents="documents" :situation="situation"></student-documents> -->
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -54,7 +22,7 @@ import StudentService from '@/services/Student'
 import DocumentService from '@/services/Document'
 import GroupService from '@/services/Group'
 import pdfjs from 'pdfjs-dist'
-// import Pushser from 'pusher-js'
+
 export default {
   name: 'StudentHome',
   components: { AcNavbar, MaskLoad, AcStudentDocument, StudentProgress },
@@ -97,8 +65,8 @@ export default {
         .then((res) => res.data)
         .then((documents) => {
           if (documents.length > 0) {
+            } else {
             this.documents = this.replaceIdForNames(groups, documents)
-          } else {
             this.documents = []
           }
           setTimeout(() => {
@@ -144,5 +112,15 @@ export default {
 </script>
 
 <style scoped>
-
+#student-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+}
+a { 
+  color: white;
+  font-size: 1.5rem;
+  margin-right: 20px;
+}
 </style>

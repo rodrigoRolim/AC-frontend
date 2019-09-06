@@ -1,123 +1,44 @@
 <template>
-  <v-app>
-    <mask-load v-if="showMask"></mask-load>
+  <div>
     <ac-navbar>
-      <v-toolbar-items>
-        <v-btn depressed color="secondary" dark to="/aluno/home">Documentos <v-icon dark right>fa-file</v-icon></v-btn>
-        <v-menu
-        transition="slide-y-transition"
-        bottom
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn
-              class="purple"
-              color="primary"
-              depressed
-              dark
-              v-on="on"
-            >
-              menu <v-icon dark right>menu</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-tile to="/aluno/perfil">
-              <v-list-tile-title>perfil</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-        <v-btn depressed  dark color="blue-grey" to="/aluno/documento/add">
-        upload <v-icon right dark>cloud_upload</v-icon>
-        </v-btn>
-        <v-btn color="error"  @click="logout()">sair<v-icon dark right>exit_to_app</v-icon></v-btn>
-      </v-toolbar-items>
+      <div id="student-nav">
+        <router-link to="/aluno/home"><i class="fas fa-home"></i></router-link>
+        <router-link to=""><i class="fas fa-user"></i></router-link>
+        <router-link to="/aluno/documento/add"><i class="fas fa-file-upload"></i></router-link>
+      </div>
     </ac-navbar>
-    <v-layout justify-center class="container">
-    
-      <v-flex xs12 sm10 md9 lg11>
-        <transition>
-          <v-alert
-          :value="successUpload"
-          :type="alert"
-          >
-            {{ messageAlert }}
-         </v-alert>
-        </transition>
-       <!--<v-progress-linear v-if="load" :indeterminate="load"></v-progress-linear>-->
-        <v-form 
-          enctype="multipart/form-data"
-          @submit.prevent="save"
-          ref="form"
-        >
-          <v-card>
-          <v-card-text>
-            <v-text-field
-              ref="name"
-              v-model="document.name"
-              :rules="[() => !!document.name || 'This field is required']"
-              label="Nome do documento"
-              placeholder="Qualquer nome que você quise"
-              required
-            ></v-text-field>
-            <v-autocomplete
-              ref="group"
-              v-model="document.group"
-              @change="changeItem"
-              :rules="[() => !!document.group || 'This field is required']"
-              :items="groupsNames"
-              label="Grupo"
-              placeholder="Select..."
-              required
-            ></v-autocomplete>
-            <v-autocomplete
-              style="work-break: break-all"
-              ref="item"
-              v-model="document.item"
-              :rules="[() => !!document.item || 'This field is required']"
-              :items="items"
-              label="Item"
-              placeholder="Select..."
-              required
-            ></v-autocomplete>
-            <v-text-field
-              type="number"
-              ref="score"
-              v-model="document.score"
-              :rules="[() => !!document.score || 'This field is required']"            
-              label="Pontos (o que você acha)*"
-              placeholder="10"
-              required
-            ></v-text-field>
-           
-            <v-text-field
-              v-if="!this.$route.params.id"
-              ref="score"
-              v-model="docName"
-              :rules="[() => !!docName || 'This field is required']"
-              label="Selecione o documento*"
-              prepend-icon="attach_file"
-              @click="pickFile"
-              required
-            ></v-text-field>
-            <input
-              v-if="!this.$route.params.id"
-              type="file"
-              style="display: none"
-              ref="doc"
-              @change="onFilePicked"
-            >        
-          </v-card-text>
-          <v-divider class="mt-5"></v-divider>
-          <v-card-actions class="justify-end">
-            <v-btn color="success" :disabled="load" :loading="load" depressed to="/aluno/home">voltar</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="secondary" :disabled="load" :loading="load" depressed @click="reset">Resetar</v-btn>
-            <v-btn color="primary" depressed :disabled="load" :loading="load" type="submit">Submit</v-btn>
-          </v-card-actions>
-        </v-card>
-        </v-form>
-      </v-flex>
-    </v-layout>
-  </v-app>
+    <div class="container">
+      <form>
+        <div class="group-div">
+          <label for="group">Grupo da atividade</label>
+          <select name="group" id="group">
+            <option value=""></option>
+          </select>
+        </div>
+        <div class="item-div">
+          <label for="item">Categoria da atividade</label>
+          <select name="item" id="item">
+            <option value=""></option>
+          </select>
+        </div>
+        <div class="score-div">
+          <label for="score">Quantos pontos vale a atividade</label>
+          <input type="text" name="score" id="score">
+        </div>
+        <div class="document-div">
+          <label>Selecione o documento</label>
+            <span class="clipper">
+              <label for="document" class="clip"><i class="fas fa-paperclip"></i></label>
+              <input type="text" id="document-name" class="inputupload" readonly placeholder="clique no clip ao lado">
+            </span>
+            <input type="file" name="document" id="document" class="fileupload">
+        </div>
+        <div class="control-btns">
+          <button type="submit">salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -143,7 +64,7 @@ export default {
         path: null,
         group: null,
         item: null,
-        student: JSON.parse(localStorage.getItem('user'))._id
+        //student: JSON.parse(localStorage.getItem('user'))._id
       },
       rules: {
         required: value => !!value || 'Required'
@@ -158,7 +79,7 @@ export default {
     }
   },
   created () {
-    this.student = JSON.parse(localStorage.getItem('user'))._id
+  /*   this.student = JSON.parse(localStorage.getItem('user'))._id
     this.showMask = true
     GroupService.readAll()
       .then((res) => res.data)
@@ -173,7 +94,7 @@ export default {
         if (this.$route.params.id) {
           this.getDocument(this.$route.params.id)
         }
-      })
+      }) */
   },
   methods: {
     getDocument (id) {
@@ -315,13 +236,127 @@ export default {
 </script>
 
 <style scoped>
+form{ display: flex; width: 100%;}
 .container {
-  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  padding: calc(18vh/2) 0;
+  align-items: center;
+  border-top: 1px solid #d1d5da;
+  width: 100%;
 }
 #select {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   word-break: break-all;
+}
+#student-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+}
+a { 
+  color: white;
+  font-size: 1.5rem;
+  margin-right: 20px;
+}
+input {
+  padding: 10px 0;
+  text-indent: 8px;
+}
+input, select {
+  border-radius: 3px;
+  border: 1px solid #d1d5da;
+}
+option[disabled] {
+  color: #d1d5da
+}
+select {
+  background-color: white;
+  padding: 9px 0;
+  text-indent: 6px;
+}
+.inputupload {
+  outline: none;
+  border: none;
+}
+.clipper {
+  margin-top: 3px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #ddd;
+}
+.fileupload {
+  display: none;
+}
+.clip {
+  border-right: 1px solid #ddd;
+  padding: 10px 20px;
+  background-color: rgba(230, 230, 233, 0.493);
+  color: rgb(136, 135, 135);
+  font-size: 1.0rem;
+}
+.control-btns {
+  display: flex;
+  flex-direction: row;
+}
+button[type="submit"] {
+  background-color: rgb(1, 90, 255);
+  border: 1px solid transparent;
+  border-radius: 1px;
+  margin-top: 50px;
+  color: white;
+  font-size: 1.0rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow:  inset 1px 2px 6px rgba(128, 125, 125, 0.288);
+}
+button[type="submit"]:active {
+  background-color: rgba(105, 230, 105, 0.808);
+}
+button[type="submit"]:disabled {
+  background-color: rgba(146, 146, 146, 0.527);
+}
+@media only screen and (max-width: 360px) {
+   form {
+    flex-direction: column;
+    width: 90%;
+  }
+  .control-btns {
+    flex-direction: column;
+  }
+  button[type="submit"] {
+    padding: 15px 0;
+  }
+  [class*="-div"] input, select {
+    margin-top: 3px;
+    width: 100%;
+  }
+  [class*="-div"] {
+    margin-top: 10px;
+  }
+}
+@media only screen and (max-width: 360px) and (max-width: 500px) {
+  form {
+    flex-direction: column;
+    width: 90%;
+  }
+  .control-btns {
+    flex-direction: column;
+  }
+  button[type="submit"] {
+    padding: 15px 0;
+  }
+  [class*="-div"] input, select {
+    margin-top: 3px;
+    width: 100%;
+  }
+  [class*="-div"] {
+    margin-top: 10px;
+  }
 }
 </style>

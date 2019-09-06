@@ -39,6 +39,7 @@ export default {
   color: white;
 }
 
+
 @media only screen and (min-width: 360px) and (max-width: 500px) {
   #arrow-back {
     display: flex;

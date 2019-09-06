@@ -1,6 +1,5 @@
 <template>
   <div>
-   
     <ac-navbar>
        <div id="desktop">
         <router-link to="/professor">professor</router-link>

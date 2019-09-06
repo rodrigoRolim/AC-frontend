@@ -14,9 +14,7 @@ import Validate from './plugins/validate'
 //import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
-Vue.use(Vuetify, {
-  iconfont: 'fa1'
-})
+Vue.use(Vuetify)
 Vue.use(Validate, {element: 'span', color: 'red', display: 'inline'})
 
 /* eslint-disable no-new */

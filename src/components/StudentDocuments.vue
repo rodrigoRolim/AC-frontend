@@ -1,5 +1,6 @@
 <template>
-  <v-layout class="table">
+  <div class="table"></div>
+  <!-- <v-layout class="table">
     <v-alert
       :value="successUpload"
       :type="alert"
@@ -95,7 +96,7 @@
       </template>
      </v-data-table>
     </v-card>
-  </v-layout>
+  </v-layout> -->
 </template>
 
 <script>
@@ -105,7 +106,7 @@ import ShowDocument from  './ShowDocument'
 export default {
   name: 'StudentProgess',
   components: { },
-  props: ['documents', 'situation'],
+  //props: ['documents', 'situation'],
   components: { Comments, ShowDocument },
   data () {
     return {
